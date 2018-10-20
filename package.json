@@ -1,0 +1,24 @@
+{
+  "name": "capra",
+  "version": "1.0.0",
+  "description": "data service, translate sql statement into web service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/linyimin-bupt/capra.git"
+  },
+  "keywords": [
+    "typescript",
+    "sql",
+    "swagger"
+  ],
+  "author": "linyimin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/linyimin-bupt/capra/issues"
+  },
+  "homepage": "https://github.com/linyimin-bupt/capra#readme"
+}
