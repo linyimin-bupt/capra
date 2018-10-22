@@ -108,5 +108,6 @@ process.on('SIGINT', () => {
       return log.error('Mysql', 'Closing all the connection in the pool fail: %s', JSON.stringify(err))
     }
     log.info('Mysql', 'Closing all the conneciotn in the pool')
+    process.exit(0)
   })
 })
