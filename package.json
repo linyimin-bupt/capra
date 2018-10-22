@@ -4,7 +4,8 @@
   "description": "data service, translate sql statement into web service",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "tslint --project tsconfig.json && tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,17 @@
   "bugs": {
     "url": "https://github.com/linyimin-bupt/capra/issues"
   },
-  "homepage": "https://github.com/linyimin-bupt/capra#readme"
+  "homepage": "https://github.com/linyimin-bupt/capra#readme",
+  "dependencies": {
+    "dotenv": "^6.1.0",
+    "mysql": "^2.16.0"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^4.0.3",
+    "@types/mysql": "^2.15.5",
+    "brolog": "^1.8.1",
+    "tslint": "^5.11.0",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.1.3"
+  }
 }
