@@ -48,7 +48,7 @@ export class Mysql {
           return reject(err)
         }
         if (!options) {
-          log.info('Mysql', 'Get a connection, threadId = ', connection.threadId)
+          log.info('Mysql', 'Get a connection, threadId = %s', connection.threadId)
           return resolve(connection)
         }
         connection.changeUser(options, error => {
