@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "tslint --project tsconfig.json && tsc --noEmit"
+    "lint": "tslint --project tsconfig.json && tsc --noEmit",
+    "start": "pm2 start process.json --env production --only capra",
+    "dev": "pm2 start process.json && pm2 logs capra"
   },
   "repository": {
     "type": "git",
