@@ -37,8 +37,11 @@ export class MysqlMetadata {
     return new Promise<string[]>(async (resolve, reject) => {
       try {
         const results = await Mysql.query('show databases;', connection) as any[]
-        const databases = results.map(result => {
+        let databases = results.map(result => {
           return result.Database
+        })
+        databases = databases.filter(database => {
+          return database !== 'information_schema' && database !== 'performance_schema' && database !== 'sys'
         })
         resolve(databases)
       } catch (err) {
