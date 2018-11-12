@@ -13,6 +13,10 @@ import express          from 'express'
  */
 import log              from './config/log'
 import * as database    from './routes/mysql-metadata'
+import {
+  sqlGenerate,
+  sqlTest,
+}                       from './routes/sql-statement'
 const app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -24,6 +28,12 @@ app.use(bodyParser.json())
 app.get('/databases', database.getAll)
 app.get('/databases/tables', database.getAlltables)
 app.get('/databases/tables/:name', database.getTableFields)
+
+/**
+ * SQL statements
+ */
+app.post('/sql/generate', sqlGenerate)
+app.get( '/sql/test', sqlTest)
 
 const PORT = process.env.LISTEN_PORT || 5000
 app.listen(PORT, () => {
