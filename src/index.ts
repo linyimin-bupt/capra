@@ -7,12 +7,15 @@
  */
 import * as bodyParser  from 'body-parser'
 import express          from 'express'
+import session          from 'express-session'
+import cookieParser    from 'cookie-parser'
 
 /**
  * Private node modules
  */
-import log              from './config/log'
-import * as database    from './routes/mysql-metadata'
+import log                    from './config/log'
+import * as database          from './routes/mysql-metadata'
+import { sessionConfig }      from './config/session-config'
 import {
   sqlGenerate,
   sqlTest,
@@ -20,6 +23,8 @@ import {
 const app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(session(sessionConfig))
+app.use(cookieParser())
 
 /**
  * database meta data
