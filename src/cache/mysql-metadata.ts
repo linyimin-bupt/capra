@@ -22,6 +22,9 @@ export interface DatabaseObj {
 export const metaDataCache = new Map<string, DatabaseObj>()
 
 export const syncMetaData = async (source: string) => {
+  if (metaDataCache.get(source)) {
+    return
+  }
   const databases = await MysqlMetadata.getAllDatabases()
   let databaseMetaData: DatabaseObj = {}
   for (let i = 0; i < databases.length; i++) {
