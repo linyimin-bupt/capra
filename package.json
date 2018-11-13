@@ -25,15 +25,18 @@
   },
   "homepage": "https://github.com/linyimin-bupt/capra#readme",
   "dependencies": {
+    "blue-tape": "^1.0.0",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "mysql": "^2.16.0",
+    "node-sqlparser": "^1.0.4",
     "session-file-store": "^1.2.0"
   },
   "devDependencies": {
+    "@types/blue-tape": "^0.1.32",
     "@types/body-parser": "^1.17.0",
     "@types/cookie-parser": "^1.4.1",
     "@types/dotenv": "^4.0.3",
