@@ -14,7 +14,7 @@ import {
  * Private node modules
  */
 import log               from '../config/log'
-import { MysqlMetadata } from '../data-access/mysql-metadata'
+import { MysqlMetadata } from '../data-access/source/mysql-metadata'
 export const getAll = async (_: Request, res: Response) => {
   try {
     const result = await MysqlMetadata.getAllDatabases()

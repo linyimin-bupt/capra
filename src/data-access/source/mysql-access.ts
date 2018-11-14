@@ -18,7 +18,7 @@ import {
   PoolConnection,
   QueryOptions,
                   } from 'mysql'
-import log          from '../config/log'
+import log          from '../../config/log'
 
 // Read config from .env
 env.config()

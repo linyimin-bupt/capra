@@ -1,4 +1,4 @@
-import { MysqlMetadata } from '../data-access/mysql-metadata'
+import { MysqlMetadata } from '../data-access/source/mysql-metadata'
 
 
 export interface FieldObj {
