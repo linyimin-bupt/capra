@@ -49,19 +49,19 @@ export const sqlGenerate = (req: Request, res: Response) => {
     res.send({ error: `from field can't be null` })
     return
   }
-  let sql = 'select \n'
-  sql += select.join(',\n')
-  sql += '\nfrom\n'
-  sql += from.join(',\n')
-  sql += '\nwhere\n'
-  sql += where.join('\n')
+  let sql = 'select '
+  sql += select.join(',')
+  sql += ' from '
+  sql += from.join(' ,')
+  sql += ' where '
+  sql += where.join(' ')
   if (groupBy) {
-    sql += '\ngroup by\n'
-    sql += groupBy.join(',\n')
+    sql += ' group by '
+    sql += groupBy.join(' ,')
   }
   if (orderBy) {
-    sql += '\norder by\n'
-    sql += orderBy.join(',\n')
+    sql += ' order by '
+    sql += orderBy.join(' ,')
   }
   if (limit) {
     try {
@@ -69,9 +69,9 @@ export const sqlGenerate = (req: Request, res: Response) => {
     } catch (error) {
       res.send({ error: 'limit field must be numberical' })
     }
-    sql += '\nlimit ' + limit.join('')
+    sql += ' limit ' + limit.join('')
   }
-  log.info('sqlGenerate', 'sql: %s', sql)
+  log.info('sqlGenerate', 'sql:\n%s', sql)
   res.send({ sql, error: null })
 
   // 处理输入输出
@@ -84,7 +84,6 @@ export const sqlGenerate = (req: Request, res: Response) => {
  */
 export const sqlTest = async (req: Request, res: Response) => {
   let sql: string = req.query.sql
-  sql = sql.replace(/\\n/g, ' ')
   log.info(sql)
   const connection = await Mysql.getConnection()
   try {
