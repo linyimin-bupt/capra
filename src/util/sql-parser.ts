@@ -118,6 +118,19 @@ export function parseWhere(sql: string): FieldObj[] {
  *
  * @param sql
  */
+export function parseLimit(sql: string): {value: string | null} {
+  const ast = parse(sql)
+  const limit = ast.limit
+  if (!limit) {
+    return { value: null}
+  }
+  return {value: limit[1].value}
+}
+
+/**
+ *
+ * @param sql
+ */
 export function sqlParameterized(sql: string): string {
   const ast: AST = parse(sql)
   __sqlParameterized(ast.where)

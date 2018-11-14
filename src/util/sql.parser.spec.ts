@@ -4,6 +4,7 @@ import {
   parseFrom,
   parseWhere,
   sqlParameterized,
+  parseLimit,
 }                                   from './sql-parser'
 
 test('parseColumns', async t => {
@@ -69,6 +70,14 @@ test('parseWhere', async t => {
   ]
 
   t.deepEqual(result, EXPECTED, 'parseWhere correct')
+})
+
+test('parseLimit', async t => {
+  const sql = 'select count(*), name, age as linyimin from tablea where field1=12 and age=10 and name like "linyimin" and test="test" and score between 90 and 100 limit 10';
+  const result = parseLimit(sql)
+  const EXPECTED = {value: '10'}
+
+  t.deepEqual(result, EXPECTED, 'parseList correct')
 })
 
 test('sqlparameterized', async t => {
