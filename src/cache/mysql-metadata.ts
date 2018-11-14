@@ -1,5 +1,5 @@
 import { MysqlMetadata } from '../data-access/source/mysql-metadata'
-
+import log               from '../config/log'
 
 /**
  * Fields' properties
@@ -62,6 +62,7 @@ export const syncMetaData = async (source: string) => {
     databaseMetaData[databases[i]] = tableMetaData
   }
   metaDataCache.set(source, databaseMetaData)
+  log.info('syncMetaData', `sync ${source} meta data success`)
 }
 
 // TODO: update the metaDataCase when some info change
