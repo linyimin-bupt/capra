@@ -118,13 +118,13 @@ export function parseWhere(sql: string): FieldObj[] {
  *
  * @param sql
  */
-export function parseLimit(sql: string): {value: string | null} {
+export function parseLimit(sql: string): {value: number | null} {
   const ast = parse(sql)
   const limit = ast.limit
   if (!limit) {
     return { value: null}
   }
-  return {value: limit[1].value}
+  return {value: parseInt(limit[1].value)}
 }
 
 /**
