@@ -1,6 +1,9 @@
 import { MysqlMetadata } from '../data-access/source/mysql-metadata'
 
 
+/**
+ * Fields' properties
+ */
 export interface FieldObj {
   [name: string]: {
     isNullAble      : string,
@@ -11,16 +14,26 @@ export interface FieldObj {
     columnComment   : string,
   }
 }
+/**
+ * Table's fields
+ */
 export interface TableObj {
   [tableName: string]: FieldObj
 }
 
+/**
+ * Database's tables
+ */
 export interface DatabaseObj {
   [databaseName: string]: TableObj,
 }
 
 export const metaDataCache = new Map<string, DatabaseObj>()
 
+/**
+ * Get the source meta data, and store in metaDataCase
+ * @param source
+ */
 export const syncMetaData = async (source: string) => {
   if (metaDataCache.get(source)) {
     return
@@ -50,3 +63,5 @@ export const syncMetaData = async (source: string) => {
   }
   metaDataCache.set(source, databaseMetaData)
 }
+
+// TODO: update the metaDataCase when some info change
