@@ -1,4 +1,4 @@
-import { MysqlMetadata } from '../data-access/source/mysql-metadata'
+import { MysqlMetadata } from '../data-access/source/mysql/mysql-metadata'
 import log               from '../config/log'
 
 /**

@@ -15,7 +15,7 @@ import {
   OutputParameterType,
   ServiceInfo,
 }                           from '../data-access/service-info';
-import { Mysql }            from '../data-access/source/mysql-access'
+import { Mysql }            from '../data-access/source/mysql/mysql-access'
 
 const METHOD = {
   get   : 'lym',
