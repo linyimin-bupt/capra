@@ -109,3 +109,12 @@ async function sqlExecute(req: Request, res: Response) {
   const result = await Mysql.query(serviceInfo!.sql, value, connection)
   res.send(result)
 }
+
+
+// Put all generating services into router
+export const generatingServiceInit = async () => {
+  const services = await ServiceInfo.findAll()
+  services.map(service => {
+    serviceRouter[service.method as METHOD_NAME](service.path, sqlExecute)
+  })
+}

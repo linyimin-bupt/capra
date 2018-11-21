@@ -24,8 +24,9 @@ import {
   serviceGenerate,
   serviceRouter,
   serviceTypeGenerate,
+  generatingServiceInit,
 }                             from './routes/service-generate'
-import { syncMetaData }       from './cache/mysql-metadata';
+import { syncMetaData }       from './cache/mysql-metadata'
 const app = express()
 // Data service app
 const serviceApp = express()
@@ -65,12 +66,23 @@ app.listen(PORT, () => {
   log.info(`Listening port ${PORT}`)
 })
 
-serviceApp.use(serviceRouter)
+serviceApp.use(serviceRouter);
 
 /**
- * init: Sync meta data
+ * init
  */
-syncMetaData('mysql')
+(async () => {
+  /**
+   * init: Sync meta data
+   */
+  await syncMetaData('mysql')
+
+  /**
+   * init generating services
+   */
+  await generatingServiceInit()
+
+})()
 
 serviceApp.listen(8000, function() {
   log.info(`Listening service port 8000`)
