@@ -1,9 +1,10 @@
-import swagger  from 'swagger-jsdoc'
+import swaggerJSDoc  from 'swagger-jsdoc'
 import fs       from 'fs'
 import path     from 'path'
 import log      from '../config/log'
 export interface SwaggerOption {
-  definition: {                       // Information of the swagger file
+  swaggerDefinition: {                 // Information of the swagger file
+    swagger: string,
     info: {
       title       : string,
       version     : string,
@@ -12,13 +13,15 @@ export interface SwaggerOption {
         name  : string,
         url?  : string,
         email?: string,
-      }
-    }
+      },
+    },
+    host: string,
+    basePath: string,
   },
   apis: string[],                     // Path to the API docs
 }
 
-const baseDir = path.join(
+export const baseDir = path.join(
   __dirname,
   path.sep,
   '..',
@@ -33,7 +36,7 @@ const baseDir = path.join(
  * @param filename  The generated file name, default to swagger.json, stores in swagger directory
  */
 export const generateSwaggerFile = function (options: SwaggerOption, filename?: string) {
-  const swaggerSpec = swagger(options)
+  const swaggerSpec = swaggerJSDoc(options)
   if (! fs.existsSync(baseDir)) {
     fs.mkdirSync(baseDir)
   }

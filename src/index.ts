@@ -27,6 +27,8 @@ import {
   generatingServiceInit,
 }                             from './routes/service-generate'
 import { syncMetaData }       from './cache/mysql-metadata'
+import * as  swaggerUi        from 'swagger-ui-express'
+import { getSwaggerJson }     from './routes/swagger-ui'
 const app = express()
 // Data service app
 const serviceApp = express()
@@ -40,10 +42,30 @@ app.use(cookieParser())
 serviceApp.use(bodyParser.urlencoded({ extended: true }))
 serviceApp.use(bodyParser.json())
 
-/**
- * database meta data
- */
 
+/**
+ * @swagger
+ *
+ * /login:
+ *   post:
+ *     description: Login to the application
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: username
+ *         description: Username to use for login.
+ *         in: formData
+ *         required: true
+ *         type: string
+ *       - name: password
+ *         description: User's password.
+ *         in: formData
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: login
+ */
 app.get('/databases', database.getAll)
 app.get('/databases/tables', database.getAlltables)
 app.get('/databases/tables/:name', database.getTableFields)
@@ -60,6 +82,11 @@ app.get( '/sql/test', sqlTest)
  */
 app.get( '/service/parameter-type', serviceTypeGenerate)
 app.post('/service/generate',       serviceGenerate)
+
+/**
+ * Generate swagger file and display with swagger ui
+ */
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(getSwaggerJson('dev.json')))
 
 const PORT = process.env.LISTEN_PORT || 5000
 app.listen(PORT, () => {
