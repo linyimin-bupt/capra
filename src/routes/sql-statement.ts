@@ -55,11 +55,11 @@ export const sqlGenerate = (req: Request, res: Response) => {
   sql += from.join(' ,')
   sql += ' where '
   sql += where.join(' ')
-  if (groupBy) {
+  if (groupBy && groupBy.length > 0) {
     sql += ' group by '
     sql += groupBy.join(' ,')
   }
-  if (orderBy) {
+  if (orderBy && orderBy.length > 0) {
     sql += ' order by '
     sql += orderBy.join(' ,')
   }
@@ -69,7 +69,7 @@ export const sqlGenerate = (req: Request, res: Response) => {
     } catch (error) {
       res.send({ error: 'limit field must be numberical' })
     }
-    sql += ' limit ' + limit.join('')
+    sql += ' limit ' + limit
   }
   log.info('sqlGenerate', 'sql:\n%s', sql)
   res.send({ sql, error: null })
