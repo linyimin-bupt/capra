@@ -86,6 +86,7 @@ export const serviceGenerate = async (req: Request, res: Response) => {
     modifyTime: 0,
     path      : path,
     name      : name,
+    method    : method,
   })
   res.send(`Generate service ${path} success`)
 

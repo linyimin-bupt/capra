@@ -25,6 +25,7 @@ export interface ServiceInfoObj {
   modifyTime: number,
   path      : string,
   name      : string,
+  method    : string,
 }
 
 
