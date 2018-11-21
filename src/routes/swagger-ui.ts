@@ -22,7 +22,7 @@ export const getSwaggerJson = function (filename: string) {
           email: 'linyimin520812@gmail.com'
         }
       },
-      host: `localhost`,
+      host: `localhost:5000`,
       basePath: '/',
     },
      apis: [path.join(__dirname, '../index.ts')]
