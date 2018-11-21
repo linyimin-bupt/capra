@@ -1,0 +1,19 @@
+{
+  "info": {
+    "title": "string",
+    "version": "string",
+    "description": "string",
+    "contact": {
+      "name": "string",
+      "url": "string",
+      "email": "string"
+    }
+  },
+  "swagger": "2.0",
+  "paths": {},
+  "definitions": {},
+  "responses": {},
+  "parameters": {},
+  "securityDefinitions": {},
+  "tags": []
+}
