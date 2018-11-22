@@ -17,15 +17,17 @@ export interface OutputParameterType {
 
 const dbCollection = 'generated-service-info'
 export interface ServiceInfoObj {
-  _id?      : string,
-  input     : InputParameterType[],
-  output    : OutputParameterType,
-  sql       : string,
-  createTime: number,
-  modifyTime: number,
-  path      : string,
-  name      : string,
-  method    : string,
+  _id?        : string,
+  input       : InputParameterType[],
+  output      : OutputParameterType,
+  sql         : string,
+  createTime  : number,
+  modifyTime  : number,
+  path        : string,
+  name        : string,
+  method      : string,
+  project?    : string,
+  description?: string,
 }
 
 

@@ -66,29 +66,32 @@ export const serviceTypeGenerate = (req: Request, res: Response) => {
       description: `limit keyword`
     })
   }
-  res.send({ parameters, response })
+  res.send({ parameters, response, sessionID: req.sessionID!, error: null })
   // cache for service register
   serviceParameterCache.set(req.sessionID!, { parameters, response, sql })
 }
 export const serviceGenerate = async (req: Request, res: Response) => {
-  const { method, path, name } = req.body
+  let { method, path, name, project, description, sessionID } = req.body
+  method = method.toLocaleLowerCase()
   serviceRouter[method as METHOD_NAME](path, sqlExecute)
-  const data = serviceParameterCache.get(req.sessionID!)
+  const data = serviceParameterCache.get(sessionID)
   if (!data) {
     res.send( {error: 'no related type data'} )
     return
   }
   await ServiceInfo.insertOne({
-    input     : data.parameters,
-    output    : data.response,
-    sql       : sqlParameterized(data.sql),
-    createTime: Date.now(),
-    modifyTime: 0,
-    path      : path,
-    name      : name,
-    method    : method,
+    input      : data.parameters,
+    output     : data.response,
+    sql        : sqlParameterized(data.sql),
+    createTime : Date.now(),
+    modifyTime : 0,
+    path       : path,
+    name       : name,
+    method     : method,
+    project    : project,
+    description: description,
   })
-  res.send(`Generate service ${path} success`)
+  res.send({error: null, result: `Generate service ${path} success`})
 
 }
 
