@@ -60,7 +60,7 @@ export class MysqlMetadata {
       try {
         const results = await Mysql.query('show tables;', connection) as any[]
         const tables = results.map(result => {
-          return result.Tables_in_mysql
+          return result[`Tables_in_${database}`]
         })
         resolve(tables)
       } catch (err) {
