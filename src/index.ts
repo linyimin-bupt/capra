@@ -33,15 +33,6 @@ const app = express()
 // Data service app
 const serviceApp = express()
 
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
-app.use(session(sessionConfig))
-app.use(cookieParser())
-
-
-serviceApp.use(bodyParser.urlencoded({ extended: true }))
-serviceApp.use(bodyParser.json())
-
 app.all('*',function (_, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
@@ -55,6 +46,15 @@ serviceApp.all('*',function (_, res, next) {
   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
   next()
 })
+
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+app.use(session(sessionConfig))
+app.use(cookieParser())
+
+
+serviceApp.use(bodyParser.urlencoded({ extended: true }))
+serviceApp.use(bodyParser.json())
 
 
 /**
