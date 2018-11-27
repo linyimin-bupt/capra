@@ -7,6 +7,7 @@
  */
 
 import {
+  default as express,
   Request,
   Response,
 }                 from 'express'
@@ -30,12 +31,81 @@ export interface SQLResult {
   [name: string]: string,    // response's name and type
 }
 
+
+export const sqlStatementRouter = express.Router()
+
 /**
  * Generate a sql with related fields
- * @param req
- * @param res
  */
-export const sqlGenerate = (req: Request, res: Response) => {
+
+/**
+ * SQL statements
+ */
+
+/**
+ * @swagger
+ *
+ * /sql/generate:
+ *   post:
+ *     tags:
+ *       - ['sql']
+ *     description: Generate a sql statement
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: select
+ *         in: body
+ *         description: Target field want to get
+ *         required: true
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *       - name: from
+ *         in: body
+ *         description: database and table names
+ *         required: true
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *       - name: where
+ *         in: body
+ *         description: Condition of sql
+ *         required: true
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *       - name: groupBy
+ *         in: body
+ *         description: Group by condition
+ *         required: false
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *       - name: orderBy
+ *         in: body
+ *         description: Order by condition
+ *         required: false
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *       - name: limit
+ *         in: body
+ *         description: limit
+ *         required: false
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+sqlStatementRouter.post('/generate', (req: Request, res: Response) => {
   const { select, from, where, groupBy, orderBy, limit } = req.body
   if (!select) {
     res.send({ error: `select field can't be null` })
@@ -74,15 +144,35 @@ export const sqlGenerate = (req: Request, res: Response) => {
   log.info('sqlGenerate', 'sql:\n%s', sql)
   res.send({ sql, error: null })
 
-  // 处理输入输出
-}
+})
 
 /**
  * Test a sql statement
  * @param req
  * @param res
  */
-export const sqlTest = async (req: Request, res: Response) => {
+
+/**
+ * @swagger
+ *
+ * /sql/test:
+ *   get:
+ *     tags:
+ *       - ['sql']
+ *     description: Test generated sql
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: sql
+ *         description: A sql staetment.
+ *         in: query
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+sqlStatementRouter.get('/test', async (req: Request, res: Response) => {
   let sql: string = req.query.sql
   log.info(sql)
   const connection = await Mysql.getConnection()
@@ -92,4 +182,4 @@ export const sqlTest = async (req: Request, res: Response) => {
   } catch (error) {
     res.send({ error })
   }
-}
+})

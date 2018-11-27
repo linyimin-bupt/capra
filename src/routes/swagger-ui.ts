@@ -25,7 +25,7 @@ export const getSwaggerJson = function (filename: string) {
       host: `localhost:5000`,
       basePath: '/',
     },
-     apis: [path.join(__dirname, '../index.ts')]
+     apis: [path.join(__dirname, './*.ts')]
 }
   generateSwaggerFile(options, `${filename}`)
   const docs = require(`${baseDir}/${filename}`)

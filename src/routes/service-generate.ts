@@ -34,9 +34,31 @@ interface ServiceParameterCache {
 // string is the session id
 const serviceParameterCache = new Map<string, ServiceParameterCache>()
 
-export const serviceRouter = express.Router()
+export const serviceRouter         = express.Router()
 
-export const serviceTypeGenerate = (req: Request, res: Response) => {
+export const serviceGenerateRouter = express.Router()
+
+/**
+ * @swagger
+ *
+ * /service/parameter-type:
+ *   get:
+ *     tags:
+ *       - ['service']
+ *     description: Get parameters' type and responses' type
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: sql
+ *         description: A sql staetment.
+ *         in: query
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+serviceGenerateRouter.get('/parameter-type', (req: Request, res: Response) => {
   const sql    = req.query.sql
   const select = parseColumns(sql)
   const from   = parseFrom(sql)
@@ -69,8 +91,39 @@ export const serviceTypeGenerate = (req: Request, res: Response) => {
   res.send({ parameters, response, sessionID: req.sessionID!, error: null })
   // cache for service register
   serviceParameterCache.set(req.sessionID!, { parameters, response, sql })
-}
-export const serviceGenerate = async (req: Request, res: Response) => {
+})
+
+/**
+ * @swagger
+ *
+ * /service/generate:
+ *   post:
+ *     tags:
+ *       - ['service']
+ *     description: Get parameters' type and responses' type
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: method
+ *         description: The request method of the service which will be generated.
+ *         in: query
+ *         required: true
+ *         type: string
+ *       - name: path
+ *         description: The URL of the service.
+ *         in: query
+ *         required: true
+ *         type: string
+ *       - name: name
+ *         description: The name of the service.
+ *         in: query
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+serviceGenerateRouter.post('/generate', async (req: Request, res: Response) => {
   let { method, path, name, project, description, sessionID } = req.body
   method = method.toLocaleLowerCase()
   serviceRouter[method as METHOD_NAME](path, sqlExecute)
@@ -93,7 +146,8 @@ export const serviceGenerate = async (req: Request, res: Response) => {
   })
   res.send({error: null, result: `Generate service ${path} success`})
 
-}
+})
+
 
 async function sqlExecute(req: Request, res: Response) {
   const path = req.url
