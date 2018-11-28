@@ -123,7 +123,7 @@ generateServiceApp.listen(PORT, () => {
 
 
 generatedServiceExecuteApp.listen(5001, function() {
-  log.info(`generatedServiceExecuteApp Listening service port 8000`)
+  log.info(`generatedServiceExecuteApp Listening service port 5001`)
 })
 
 serviceManagerApp.listen(5002, function() {
