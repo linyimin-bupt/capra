@@ -34,10 +34,10 @@ serviceManagerRouter.get('/all', async (_: Request, res: Response) => {
     const result = await RegisterServiceInfo.findAll()
     const registedServiceInfos = result.map(serviceInfo => {
       return  {
-        name       : serviceInfo.name,
-        description: serviceInfo.description || '',
-        status     : serviceInfo.status,
-        project    : serviceInfo.project || ''
+        name   : serviceInfo.name,
+        des    : serviceInfo.description || '',
+        state  : serviceInfo.status,
+        project: serviceInfo.project || ''
       }
     })
     res.send({datum: registedServiceInfos, error: null})
@@ -90,13 +90,13 @@ serviceManagerRouter.get('/project', async (req: Request, res: Response) => {
           basic: {
             name   : serviceName,
             project: serviceInfo.project || '',
-            address: serviceInfo.address,
+            add: serviceInfo.address,
           },
           parameter: {
             basic: {
               method: serviceInfo.method,
               path  : serviceInfo.path,
-              port  : serviceInfo.port || '80',
+              num   : serviceInfo.port || '80',
             },
             info: serviceInfo.parameter,
           },
