@@ -1,2 +1,2 @@
 export const dataServiceDB = 'dataService'
-export const mongoUrl      = 'mongodb://127.0.0.1:27017'
+export const mongoUrl      = 'mongodb://123.56.87.74:27017'
