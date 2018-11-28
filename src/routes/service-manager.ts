@@ -411,10 +411,10 @@ serviceManagerRouter.get('/query', async (req: Request, res: Response) => {
     const result = await RegisterServiceInfo.findByNameAndStatus(serviceName, status)
     const serviceInfo = result.map(service => {
       return {
-        name       : service.name,
-        description: service.description || '',
-        status     : service.status,
-        project    : service.project || ''
+        name   : service.name,
+        des    : service.description || '',
+        state  : service.status,
+        project: service.project || ''
       }
     })
     res.send({datum: serviceInfo ,error: null})
