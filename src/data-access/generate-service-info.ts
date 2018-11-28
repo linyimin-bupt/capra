@@ -16,7 +16,7 @@ export interface OutputParameterType {
 }
 
 const dbCollection = 'generated-service-info'
-export interface ServiceInfoObj {
+export interface GenerateServiceInfoObj {
   _id?        : string,
   input       : InputParameterType[],
   output      : OutputParameterType,
@@ -31,18 +31,18 @@ export interface ServiceInfoObj {
 }
 
 
-export class ServiceInfo {
-  public static async findAll(): Promise<ServiceInfoObj[]> {
-    const collection: Collection<ServiceInfoObj> = DataAccess.DB.collection(dbCollection)
+export class GenerateServiceInfo {
+  public static async findAll(): Promise<GenerateServiceInfoObj[]> {
+    const collection: Collection<GenerateServiceInfoObj> = DataAccess.DB.collection(dbCollection)
     return await collection.find({}).toArray()
   }
 
-  public static async insertOne(doc: ServiceInfoObj): Promise<InsertOneWriteOpResult> {
-    const collection: Collection<ServiceInfoObj> = DataAccess.DB.collection(dbCollection)
+  public static async insertOne(doc: GenerateServiceInfoObj): Promise<InsertOneWriteOpResult> {
+    const collection: Collection<GenerateServiceInfoObj> = DataAccess.DB.collection(dbCollection)
     return await collection.insertOne(doc)
   }
-  public static async findByPath(path: string): Promise<ServiceInfoObj | null> {
-    const collection: Collection<ServiceInfoObj> = DataAccess.DB.collection(dbCollection)
+  public static async findByPath(path: string): Promise<GenerateServiceInfoObj | null> {
+    const collection: Collection<GenerateServiceInfoObj> = DataAccess.DB.collection(dbCollection)
     return await collection.findOne({ path })
   }
 }

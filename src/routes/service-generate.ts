@@ -13,7 +13,7 @@ import {
 import {
   InputParameterType,
   OutputParameterType,
-  ServiceInfo,
+  GenerateServiceInfo,
 }                           from '../data-access/generate-service-info';
 import { Mysql }            from '../data-access/source/mysql/mysql-access'
 
@@ -132,7 +132,7 @@ serviceGenerateRouter.post('/generate', async (req: Request, res: Response) => {
     res.send( {error: 'no related type data'} )
     return
   }
-  await ServiceInfo.insertOne({
+  await GenerateServiceInfo.insertOne({
     input      : data.parameters,
     output     : data.response,
     sql        : sqlParameterized(data.sql),
@@ -154,7 +154,7 @@ async function sqlExecute(req: Request, res: Response) {
   const body = req.body
   console.log(body)
   const value = new Array()
-  const serviceInfo = await ServiceInfo.findByPath(path)
+  const serviceInfo = await GenerateServiceInfo.findByPath(path)
   serviceInfo!.input.map(parameter => {
     if (body[parameter.name]){
       value.push(body[parameter.name])
@@ -170,7 +170,7 @@ async function sqlExecute(req: Request, res: Response) {
 
 // Put all generating services into router
 export const generatingServiceInit = async () => {
-  const services = await ServiceInfo.findAll()
+  const services = await GenerateServiceInfo.findAll()
   services.map(service => {
     serviceRouter[service.method as METHOD_NAME](service.path, sqlExecute)
   })
