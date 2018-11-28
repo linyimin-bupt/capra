@@ -69,11 +69,11 @@ export class RegisterServiceInfo {
   public static async findByNameAndStatus(name?: string, status?: number): Promise<RegisterServiceInfoObj[]> {
     const collection: Collection<RegisterServiceInfoObj> = DataAccess.DB.collection(dbCollection)
     let result: RegisterServiceInfoObj[] = []
-    if (name && status !== undefined) {
+    if (name && status! >= 0) {
       result = await collection.find({name, status}).toArray()
     } else if (name) {
       result = await collection.find({name}).toArray()
-    } else if (status !== undefined) {
+    } else if (status! >= 0) {
       result = await collection.find({status}).toArray()
     }
     return result
