@@ -14,7 +14,7 @@ import {
   InputParameterType,
   OutputParameterType,
   ServiceInfo,
-}                           from '../data-access/service-info';
+}                           from '../data-access/generate-service-info';
 import { Mysql }            from '../data-access/source/mysql/mysql-access'
 
 const METHOD = {
