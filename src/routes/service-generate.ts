@@ -3,6 +3,8 @@ import {
   Response,
   default as express,
 }                           from 'express'
+import rq                   from 'request-promise'
+import sqlstring            from  'sqlstring'
 import {
   parseColumns,
   parseFrom,
@@ -14,8 +16,8 @@ import {
   InputParameterType,
   OutputParameterType,
   GenerateServiceInfo,
-}                           from '../data-access/generate-service-info';
-import { Mysql }            from '../data-access/source/mysql/mysql-access'
+}                           from '../data-access/generate-service-info'
+import { drillUrl }         from '../config/basic'
 
 const METHOD = {
   get   : 'lym',
@@ -72,13 +74,25 @@ serviceGenerateRouter.get('/parameter-type', (req: Request, res: Response) => {
   })
 
   where.map(column => {
-    let parameter: InputParameterType = {
-      name: column.column,
-      defaultValue: column.defaultValue,
-      type: 'string',
-      description: `from ${from[0].table}`
+    if (typeof column.defaultValue === 'string') {
+      let parameter: InputParameterType = {
+        name: column.column,
+        defaultValue: column.defaultValue,
+        type: 'string',
+        description: `from ${from[0].table}`
+      }
+      parameters.push(parameter)
+    } else {
+      column.defaultValue.map((value, index) => {
+        let parameter: InputParameterType = {
+          name: column.column + '_' + index,
+          defaultValue: value,
+          type: 'string',
+          description: `from ${from[0].table}`
+        }
+        parameters.push(parameter)
+      })
     }
-    parameters.push(parameter)
   })
   if (limit.value) {
     parameters.push({
@@ -151,10 +165,17 @@ serviceGenerateRouter.post('/generate', async (req: Request, res: Response) => {
 
 async function sqlExecute(req: Request, res: Response) {
   const path = req.url
-  const body = req.body
-  console.log(body)
-  const value = new Array()
   const serviceInfo = await GenerateServiceInfo.findByPath(path)
+  if (! serviceInfo) {
+    res.status(404)
+    res.send({error: `Service ${path} is not exist`})
+    return
+  }
+  let body = req.body
+  if (serviceInfo.method === 'get') {
+    body = req.query
+  }
+  const value = new Array()
   serviceInfo!.input.map(parameter => {
     if (body[parameter.name]){
       value.push(body[parameter.name])
@@ -162,9 +183,33 @@ async function sqlExecute(req: Request, res: Response) {
       value.push(parameter.defaultValue)
     }
   })
-  const connection = await Mysql.getConnection()
-  const result = await Mysql.query(serviceInfo!.sql, value, connection)
-  res.send(result)
+  // const connection = await Mysql.getConnection()
+  // const result = await Mysql.query(serviceInfo!.sql, value, connection)
+  let sql = sqlstring.format(serviceInfo.sql, value)
+  console.log(sql)
+  const condition = sql.match(/.* FROM (.*) WHERE/)
+  if (condition) {
+    const tables = condition[1].split(' ').map(table => {
+      return 'mysql.' + table
+    })
+    sql = sql.replace(condition[1], tables.join(' '))
+  }
+  console.log(sql)
+  const options = {
+    method: 'POST',
+    uri: drillUrl,
+    body: {
+      "queryType": "SQL",
+      "query": sql
+    },
+    json: true // Automatically stringifies the body to JSON
+  }
+  try {
+    const result = await rq(options)
+    res.send(result)
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 

@@ -60,6 +60,7 @@ interface FieldObj {
  * public api
  */
 export function parseColumns(sql: string): RawResponseFieldObj[] {
+  console.log(sql)
   const ast: AST = parse(sql)
   const columns  = ast.columns
   if (typeof columns === 'string') {
