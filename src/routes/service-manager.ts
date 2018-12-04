@@ -423,3 +423,108 @@ serviceManagerRouter.get('/query', async (req: Request, res: Response) => {
     log.error('/query', 'query service failed: %s', JSON.stringify(err))
   }
 })
+
+
+/**
+ * @swagger
+ *
+ * /service-manager/modify/{serviceName}:
+ *   post:
+ *     tags:
+ *       - ['service-manager']
+ *     description: create a service
+ *     parameters:
+ *       - name: serviceName
+ *         description: project name for geting all services' infomation.
+ *         in: path
+ *         required: true
+ *         type: string
+ *       - name: project
+ *         description: project name for geting all services' infomation.
+ *         in: body
+ *         schema:
+ *           type: object
+ *           properties:
+ *             name:
+ *               type: string
+ *               description: The service new name
+ *             address:
+ *               type: string
+ *               description: The service address
+ *             port:
+ *               type: string
+ *               description: The service port
+ *             path:
+ *               type: string
+ *               description: The service path
+ *             method:
+ *               type: string
+ *               description: The service method
+ *             project:
+ *               type: string
+ *               description: The service belongs to which project
+ *             parameter:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   name:
+ *                     type: string
+ *                     description: The parameter type
+ *                   type:
+ *                     type: string
+ *                     description: The parameter type
+ *                   description:
+ *                     type: string
+ *                     description: The parameter description
+ *                   isRequired:
+ *                     type: string
+ *                     description: The parameter is required or not
+ *
+ *               description: The service parameter
+ *             response:
+ *               type: object
+ *               description: The service name
+ *               properties:
+ *                 name:
+ *                   type: string
+ *             statusCode:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   status:
+ *                     type: string
+ *                     description: The status number
+ *                   info:
+ *                     type: string
+ *                     description: The information of status code
+ *                   description:
+ *                     type: string
+ *                     description: The parameter description
+ *             description:
+ *               type: string
+ *               description: Description of the service
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+serviceManagerRouter.post('/modify/:name', async (req: Request, res: Response) => {
+  const serviceName: string = req.params.name
+  const serviceInfo: ServiceInfo = req.body
+
+  const doc: RegisterServiceInfoObj = {
+    ...serviceInfo,
+    modifyTime: Date.now(),
+  }
+
+  try {
+    await RegisterServiceInfo.updateByName(serviceName, doc)
+    res.send({datum: `Modify ${serviceName} successed`, error: null})
+  } catch (error) {
+    res.send({datum: null, error:`Modify service ${serviceName} failed.`})
+    log.error('/modify', 'modify service failed: %s', JSON.stringify(error))
+  }
+})
