@@ -101,7 +101,8 @@ serviceManagerRouter.get('/project', async (req: Request, res: Response) => {
             info: serviceInfo.parameter,
           },
           response: serviceInfo.response,
-          statusCode: serviceInfo.statusCode || []
+          statusCode: serviceInfo.statusCode || [],
+          description: serviceInfo.description || 'null'
         },
         error: null,
       })
